@@ -28,7 +28,9 @@ namespace StackOverflow.Models
         [ForeignKey("QuestionId")]
         public Question? Question { get; set; }
 
-        public int VoteCount => Votes == null ? 0 : Votes.Count(v => v.Value == Vote.VoteValue.UpVote) - Votes.Count(v => v.Value == Vote.VoteValue.DownVote);
+        public int VoteCount => Votes == null ? 0 : 
+            Votes.Count(v => v.Value == Vote.VoteValue.UpVote) - 
+            Votes.Count(v => v.Value == Vote.VoteValue.DownVote);
 
         public ICollection<AnswerVote>? Votes { get; set; }
     }

@@ -24,7 +24,9 @@ namespace StackOverflow.Models
 
         public DateTime? CreationDate { get; set; }
 
-        public int VoteCount => Votes == null ? 0 : Votes.Count(v => v.Value == Vote.VoteValue.UpVote) - Votes.Count(v => v.Value == Vote.VoteValue.DownVote);
+        public int VoteCount => Votes == null ? 0 : 
+            Votes.Count(v => v.Value == Vote.VoteValue.UpVote) - 
+            Votes.Count(v => v.Value == Vote.VoteValue.DownVote);
 
         public ICollection<QuestionTag>? QuestionTags { get; set; }
         public ICollection<Answer>? Answers { get; set; }
