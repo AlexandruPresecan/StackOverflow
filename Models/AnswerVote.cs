@@ -1,13 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StackOverflow.Models
 {
     public class AnswerVote : Vote 
     {
+        [Required]
         public int AnswerId { get; set; }
 
-        [JsonIgnore]
         [ForeignKey("AnswerId")]
         public Answer? Answer { get; set; }
     }

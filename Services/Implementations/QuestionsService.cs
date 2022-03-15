@@ -10,12 +10,14 @@ namespace StackOverflow.Services
         private readonly ApplicationDbContext _db;
         private readonly TagsService _tagsService;
         private readonly QuestionTagsService _questionTagsService;
+        private readonly AnswersService _answersService;
 
-        public QuestionsService(ApplicationDbContext db)
+        public QuestionsService(ApplicationDbContext db, AnswersService answersService, QuestionTagsService questionTagsService, TagsService tagsService)
         {
             _db = db;
-            _tagsService = new TagsService(db);
-            _questionTagsService = new QuestionTagsService(db);
+            _tagsService = tagsService;
+            _questionTagsService = questionTagsService;
+            _answersService = answersService;
         }
 
         public ServiceResult Get()
@@ -58,8 +60,6 @@ namespace StackOverflow.Services
             if (question == null)
                 return new ServiceResult("Question Id not found", false);
 
-            _db.QuestionTags.Include(qt => qt.Tag);
-
             return new ServiceResult
             (
                 new 
@@ -91,7 +91,7 @@ namespace StackOverflow.Services
                                 },
                                 CreationDate = a.CreationDate,
                                 Text = a.Text,
-                                VoteCount = a.VoteCount
+                                VoteCount = _answersService.GetVoteCount(a.Id)
                             }
                         ),
                     Tags = _tagsService.GetByQuestion(question)
@@ -158,6 +158,12 @@ namespace StackOverflow.Services
             _db.SaveChanges();
 
             return new ServiceResult("Question deleted");
+        }
+
+        public int GetVoteCount(int id)
+        {
+            Question? question = _db.Questions.Include(q => q.Votes).FirstOrDefault(q => q.Id == id);
+            return question == null ? 0 : question.VoteCount;
         }
     }
 }

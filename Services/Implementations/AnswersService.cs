@@ -8,10 +8,12 @@ namespace StackOverflow.Services
     public class AnswersService : IService<int, AnswerDTO>
     {
         private readonly ApplicationDbContext _db;
+        private readonly TagsService _tagsService;
 
-        public AnswersService(ApplicationDbContext db)
+        public AnswersService(ApplicationDbContext db, TagsService tagsService)
         {
             _db = db;
+            _tagsService = tagsService;
         }
 
         public ServiceResult Get()
@@ -81,7 +83,7 @@ namespace StackOverflow.Services
                         Title = answer.Question.Title,
                         CreationDate = answer.Question.CreationDate,
                         VoteCount = answer.Question.VoteCount,
-                        Tags = answer.Question.QuestionTags.Select(qt => qt.Tag.Name)
+                        Tags = _tagsService.GetByQuestion(answer.Question)
                     }
                 }
             );
@@ -135,6 +137,12 @@ namespace StackOverflow.Services
             _db.SaveChanges();
 
             return new ServiceResult("Answer deleted");
+        }
+
+        public int GetVoteCount(int id)
+        {
+            Answer? answer = _db.Answers.Include(a => a.Votes).FirstOrDefault(a => a.Id == id);
+            return answer == null ? 0 : answer.VoteCount;
         }
     }
 }

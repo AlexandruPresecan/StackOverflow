@@ -11,26 +11,23 @@ namespace StackOverflow.Services
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _db;
         private readonly TagsService _tagsService;
+        private readonly AnswersService _answersService;
+        private readonly QuestionsService _questionService;
 
-        public ApplicationUsersService(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
+        public ApplicationUsersService(ApplicationDbContext db, UserManager<ApplicationUser> userManager, TagsService tagsService, AnswersService answersService, QuestionsService questionsService)
         {
             _db = db;
             _userManager = userManager;
-            _tagsService = new TagsService(db);
+            _tagsService = tagsService;
+            _answersService = answersService;
+            _questionService = questionsService;
         }
 
         public ServiceResult Get()
         {
-            _db.Questions.Include(q => q.Votes);
-            _db.Answers.Include(a => a.Votes);
-
             return new ServiceResult
             (
                 _userManager.Users
-                    .Include(u => u.Answers)
-                    .Include(u => u.Questions)
-                    .Include(u => u.AnswerVotes)
-                    .Include(u => u.QuestionVotes)
                     .Select
                     (
                         u => new
@@ -49,15 +46,10 @@ namespace StackOverflow.Services
             ApplicationUser? user = _userManager.Users
                 .Include(u => u.Answers)
                 .Include(u => u.Questions)
-                .Include(u => u.AnswerVotes)
-                .Include(u => u.QuestionVotes)
                 .FirstOrDefault(u => u.Id == id);
 
             if (user == null)
                 return new ServiceResult("User Id not found", false);
-
-            _db.Questions.Include(q => q.Votes);
-            _db.Answers.Include(a => a.Votes);
 
             return new ServiceResult
             (
@@ -75,7 +67,7 @@ namespace StackOverflow.Services
                                 Id = q.Id,
                                 Title = q.Title,
                                 CreationDate = q.CreationDate,
-                                VoteCount = q.VoteCount,
+                                VoteCount = _questionService.GetVoteCount(q.Id),
                                 Tags = _tagsService.GetByQuestion(q)
                             }
                         ),
@@ -87,7 +79,7 @@ namespace StackOverflow.Services
                                 Id = a.Id,
                                 Text = a.Text,
                                 CreationDate = a.CreationDate,
-                                VoteCount = a.VoteCount,
+                                VoteCount = _answersService.GetVoteCount(a.Id),
                                 QuestionId = a.QuestionId
                             }
                         )
@@ -97,16 +89,18 @@ namespace StackOverflow.Services
 
         public ServiceResult Post(ApplicationUserDTO value)
         {
-            IdentityResult identityResult = _userManager.CreateAsync
-            (
-                new ApplicationUser()
-                {
-                    UserName = value.UserName,
-                    Email = value.Email
-                },
-                value.Password
-            )
-            .Result;
+            IdentityResult identityResult = _userManager
+                .CreateAsync
+                (
+                    new ApplicationUser()
+                    {
+                        UserName = value.UserName,
+                        Email = value.Email,
+                        Score = 0
+                    },
+                    value.Password
+                )
+                .Result;
 
             if (identityResult.Succeeded)
                 return new ServiceResult("User created");
@@ -158,6 +152,19 @@ namespace StackOverflow.Services
             _userManager.DeleteAsync(user);
 
             return new ServiceResult("User deleted");
+        }
+
+        public void UpdateScore(string id, int value)
+        {
+            ApplicationUser? user = _db.Users.FirstOrDefault(u => u.Id == id);
+
+            if (user == null)
+                return;
+
+            user.Score += value;
+
+            _db.Users.Update(user);
+            _db.SaveChanges();
         }
     }
 }

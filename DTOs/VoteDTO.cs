@@ -1,10 +1,10 @@
-﻿using StackOverflow.Models;
+﻿using StackOverflow.Enums;
 
 namespace StackOverflow.DTOs
 {
     public class VoteDTO
     {
         public string? AuthorId { get; set; }
-        public Vote.VoteValue Value { get; set; }
+        public VoteValue Value { get; set; }
     }
 }

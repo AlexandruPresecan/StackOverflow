@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using StackOverflow.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace StackOverflow.Models
 {
@@ -12,7 +12,6 @@ namespace StackOverflow.Models
         [Required]
         public string? AuthorId { get; set; }
 
-        [JsonIgnore]
         [ForeignKey("AuthorId")]
         public ApplicationUser? Author { get; set; }
 
@@ -22,11 +21,12 @@ namespace StackOverflow.Models
         [Required]
         public string? Text { get; set; }
 
+        [Required]
         public DateTime? CreationDate { get; set; }
 
         public int VoteCount => Votes == null ? 0 : 
-            Votes.Count(v => v.Value == Vote.VoteValue.UpVote) - 
-            Votes.Count(v => v.Value == Vote.VoteValue.DownVote);
+            Votes.Count(v => v.Value == VoteValue.UpVote) - 
+            Votes.Count(v => v.Value == VoteValue.DownVote);
 
         public ICollection<QuestionTag>? QuestionTags { get; set; }
         public ICollection<Answer>? Answers { get; set; }

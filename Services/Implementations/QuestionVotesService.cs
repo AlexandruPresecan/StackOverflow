@@ -1,5 +1,7 @@
-﻿using StackOverflow.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using StackOverflow.Data;
 using StackOverflow.DTOs;
+using StackOverflow.Enums;
 using StackOverflow.Models;
 
 namespace StackOverflow.Services
@@ -7,10 +9,12 @@ namespace StackOverflow.Services
     public class QuestionVotesService : IService<int, QuestionVoteDTO>
     {
         private readonly ApplicationDbContext _db;
+        private readonly ApplicationUsersService _usersService;
 
-        public QuestionVotesService(ApplicationDbContext db)
+        public QuestionVotesService(ApplicationDbContext db, ApplicationUsersService usersService)
         {
             _db = db;
+            _usersService = usersService;
         }
 
         public ServiceResult Get()
@@ -63,6 +67,9 @@ namespace StackOverflow.Services
             _db.QuestionVotes.Add(new QuestionVote { AuthorId = value.AuthorId, QuestionId = value.QuestionId, Value = value.Value });
             _db.SaveChanges();
 
+            Question? question = _db.Questions.FirstOrDefault(q => q.Id == value.QuestionId);
+            _usersService.UpdateScore(question.AuthorId, value.Value == VoteValue.UpVote ? 5 : -2);
+
             return new ServiceResult("Question Vote created");
         }
 
@@ -73,10 +80,17 @@ namespace StackOverflow.Services
             if (vote == null)
                 return new ServiceResult("Question Vote Id not found", false);
 
+            bool voteChanged = vote.Value != value.Value;
             vote.Value = value.Value;
 
             _db.QuestionVotes.Update(vote);
             _db.SaveChanges();
+
+            if (voteChanged)
+            {
+                Question? question = _db.Questions.FirstOrDefault(q => q.Id == vote.QuestionId);
+                _usersService.UpdateScore(question.AuthorId, vote.Value == VoteValue.UpVote ? 7 : -7);
+            }
 
             return new ServiceResult("Question Vote updated");
         }
@@ -87,6 +101,9 @@ namespace StackOverflow.Services
 
             if (vote == null)
                 return new ServiceResult("Question Vote Id not found", false);
+
+            Question? question = _db.Questions.FirstOrDefault(q => q.Id == vote.QuestionId);
+            _usersService.UpdateScore(question.AuthorId, vote.Value == VoteValue.UpVote ? -5 : 2);
 
             _db.QuestionVotes.Remove(vote);
             _db.SaveChanges();
