@@ -4,11 +4,11 @@ using StackOverflow.Models;
 
 namespace StackOverflow.Services
 {
-    public class AnwserVotesService : IService<int, AnswerVoteDTO>
+    public class AnswerVotesService : IService<int, AnswerVoteDTO>
     {
         private readonly ApplicationDbContext _db;
 
-        public AnwserVotesService(ApplicationDbContext db)
+        public AnswerVotesService(ApplicationDbContext db)
         {
             _db = db;
         }

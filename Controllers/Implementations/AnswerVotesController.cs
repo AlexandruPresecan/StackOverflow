@@ -1,14 +1,12 @@
-﻿using StackOverflow.Data;
-using StackOverflow.DTOs;
+﻿using StackOverflow.DTOs;
 using StackOverflow.Services;
 
 namespace StackOverflow.Controllers
 {
     public class AnswerVotesController : ApiController<int, AnswerVoteDTO>
     {
-        public AnswerVotesController(ApplicationDbContext db)
+        public AnswerVotesController(AnswerVotesService service) : base(service)
         {
-            _service = new AnwserVotesService(db);
         }
     }
 }

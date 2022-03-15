@@ -9,7 +9,12 @@ namespace StackOverflow.Controllers
     [ApiController]
     public class ApiController<K, V> : ControllerBase
     {
-        protected IService<K, V> _service;
+        private readonly IService<K, V> _service;
+
+        public ApiController(IService<K, V> service)
+        {
+            _service = service;
+        }
 
         public IActionResult ServiceResultToAction(ServiceResult result)
         {

@@ -1,14 +1,12 @@
-﻿using StackOverflow.Data;
-using StackOverflow.DTOs;
+﻿using StackOverflow.DTOs;
 using StackOverflow.Services;
 
 namespace StackOverflow.Controllers
 {
     public class QuestionTagsController : ApiController<int, QuestionTagDTO>
     {
-        public QuestionTagsController(ApplicationDbContext db)
+        public QuestionTagsController(QuestionTagsService service) : base(service)
         {
-            _service = new QuestionTagsService(db);
         }
     }
 }

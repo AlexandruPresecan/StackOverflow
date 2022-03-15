@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using StackOverflow.Data;
 using StackOverflow.Models;
+using StackOverflow.Services;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,8 +24,16 @@ builder.Services.AddIdentityServer()
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
 
-builder.Services.AddControllersWithViews().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles); ;
+builder.Services.AddControllersWithViews().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<AnswersService>();
+builder.Services.AddScoped<AnswerVotesService>();
+builder.Services.AddScoped<ApplicationUsersService>();
+builder.Services.AddScoped<QuestionsService>();
+builder.Services.AddScoped<QuestionTagsService>();
+builder.Services.AddScoped<QuestionVotesService>();
+builder.Services.AddScoped<TagsService>();
 
 var app = builder.Build();
 

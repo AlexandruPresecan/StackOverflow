@@ -1,13 +1,11 @@
-﻿using StackOverflow.Data;
-using StackOverflow.Services;
+﻿using StackOverflow.Services;
 
 namespace StackOverflow.Controllers
 {
     public class TagsController : ApiController<int, string>
     {
-        public TagsController(ApplicationDbContext db)
+        public TagsController(TagsService service) : base(service)
         {
-            _service = new TagsService(db);
         }
     }
 }
