@@ -115,18 +115,19 @@ namespace StackOverflow.Services
             _db.Questions.Add(question);
             _db.SaveChanges();
 
-            foreach (string name in value.Tags)
-            {
-                Tag? tag = _tagsService.GetByName(name);
-
-                if (tag == null)
+            if (value.Tags != null)
+                foreach (string name in value.Tags)
                 {
-                    _tagsService.Post(name);
-                    tag = _tagsService.GetByName(name);
-                }
+                    Tag? tag = _tagsService.GetByName(name);
 
-                _questionTagsService.Post(new QuestionTagDTO() { QuestionId = question.Id, TagId = tag.Id });
-            }
+                    if (tag == null)
+                    {
+                        _tagsService.Post(name);
+                        tag = _tagsService.GetByName(name);
+                    }
+
+                    _questionTagsService.Post(new QuestionTagDTO() { QuestionId = question.Id, TagId = tag.Id });
+                }
 
             return new ServiceResult("Question created");
         }
