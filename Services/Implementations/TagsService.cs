@@ -63,10 +63,12 @@ namespace StackOverflow.Services
             if (GetByName(value) != null)
                 return new ServiceResult("Tag already exists", false);
 
-            _db.Tags.Add(new Tag { Name = value });
+            Tag tag = new Tag { Name = value };
+
+            _db.Tags.Add(tag);
             _db.SaveChanges();
 
-            return new ServiceResult("Tag created");
+            return new ServiceResult(tag);
         }
 
         public ServiceResult Put(int id, string value)
@@ -84,7 +86,7 @@ namespace StackOverflow.Services
             _db.Tags.Update(tag);
             _db.SaveChanges();
 
-            return new ServiceResult("Tag updated");
+            return new ServiceResult(tag);
         }
 
         public ServiceResult Delete(int id)
