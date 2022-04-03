@@ -16,3 +16,21 @@ html {
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
+
+.search-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.search-icon {
+  width: 25px;
+  height: 25px;
+  margin: 5px;
+  opacity: 0.6;
+}
+
+.search-icon:hover {
+  opacity: 1;
+  cursor: pointer;
+}

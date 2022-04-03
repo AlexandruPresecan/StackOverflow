@@ -20,22 +20,23 @@
         [ngClass]="{ show: isExpanded }"
       >
         <ul class="navbar-nav flex-grow">
-          <li
-            class="nav-item"
-            [routerLinkActive]="['link-active']"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
+          <div class="search-container">
+            <input type="text" placeholder="Search..">
+            <img src="../../assets/icons/magnifier.svg" class="search-icon">
+          </div>
+          <li class="nav-item"
+              [routerLinkActive]="['link-active']"
+              [routerLinkActiveOptions]="{ exact: true }">
             <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/counter']"
-              >Counter</a
-            >
+            <a class="nav-link text-dark" [routerLink]="['/questions']">Questions</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
-              >Fetch data</a
-            >
+            <a class="nav-link text-dark" [routerLink]="['/users']">Users</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="['link-active']">
+            <a class="nav-link text-dark" [routerLink]="['/tags']">Tags</a>
           </li>
         </ul>
         <app-login-menu></app-login-menu>

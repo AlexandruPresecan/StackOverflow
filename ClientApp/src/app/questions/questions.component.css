@@ -1,0 +1,32 @@
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.header-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.question {
+  border-style: dashed;
+  border-width: 1px;
+  border-left-width: 0px;
+  border-right-width: 0px;
+  border-color: blueviolet;
+}
+
+.question:hover h5 {
+  color: blueviolet;
+}
+
+.author {
+  font-size: 80%;
+}
+
+.score {
+  font-weight: bold;
+}

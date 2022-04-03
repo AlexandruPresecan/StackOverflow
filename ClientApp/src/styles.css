@@ -11,6 +11,42 @@ code {
 
 .btn-primary {
   color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  background-color: blueviolet;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: purple;
+  box-shadow: 1px 1px 3px 1px black;
+}
+
+.btn-primary:active {
+  background-color: purple;
+}
+
+.btn-primary:focus {
+  background-color: purple;
+}
+
+.post-container {
+  margin: 30px 7% 30px 7%;
+  display: flex;
+  padding: 15px;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  box-shadow: 0px 0px 2px 1px;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.post-element {
+  display: flex;
+  flex-direction: column;
+}
+
+.hover-container:hover {
+  background-color: lightgray;
+  cursor: pointer;
 }

@@ -1,0 +1,43 @@
+<p *ngIf="!user"><em>Loading...</em></p>
+
+<div *ngIf="user">
+  <div class="flex-container">
+    <h5>{{ user.userName }}</h5>
+    <p class="score">Score: {{ user.score }}</p>
+  </div>
+  <div *ngIf="user.questions">
+    <h5>Questions</h5>
+    <div *ngFor="let question of user.questions" class="flex-container question">
+      <div>
+        <p>Votes: {{ question.voteCount }}</p>
+      </div>
+      <div class="details">
+        <h5 (click)="redirectToQuestion(question.id)">{{ question.title }}</h5>
+        <p>{{ question.text }}</p>
+        <div *ngIf="question.tags" class="flex-container">
+          <div *ngFor="let tag of question.tags">
+            <p class="tag">{{ tag }}</p>
+          </div>
+        </div>
+        <div class="flex-container">
+          <p class="author">asked on {{ question.creationDate | date: 'dd-MM-yyyy' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="user.answers">
+    <h5>Answers</h5>
+    <div *ngFor="let answer of user.answers" class="flex-container question">
+      <div>
+        <p>Votes: {{ answer.voteCount }}</p>
+      </div>
+      <div class="details">
+        <p (click)="redirectToQuestion(answer.questionId)">{{ answer.text }}</p>
+        <div class="flex-container">
+          <p class="author">answered on {{ answer.creationDate | date: 'dd-MM-yyyy' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

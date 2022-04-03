@@ -1,0 +1,70 @@
+<p *ngIf="!question"><em>Loading...</em></p>
+
+<div *ngIf="question" class="post-container">
+
+  <div class="flex-container">
+
+    <div class="votes">
+      <img src="../../assets/icons/triangle-svgrepo-com_1.svg" class="triangle">
+      <h6>{{ question.voteCount }}</h6>
+      <img src="../../assets/icons/triangle-svgrepo-com_1.svg" class="triangle reverse">
+    </div>
+
+    <div class="details">
+
+      <h3>{{ question.title }}</h3>
+      <p>{{ question.text }}</p>
+      <app-tags [tags]="question.tags"></app-tags>
+      <div class="flex-container">
+        <p class="author">{{ question.author.userName }}</p>
+        <p class="author score">{{ question.author.score }}</p>
+        <p class="author">asked on {{ question.creationDate | date: 'dd-MM-yyyy' }}</p>
+      </div>
+
+      <div *ngIf="question.answers">
+
+        <h4>{{question.answers.length}} Answers</h4>
+        <div *ngFor="let answer of question.answers" class="question post-container">
+
+          <div class="flex-container">
+
+            <div class="votes">
+              <img src="../../assets/icons/triangle-svgrepo-com_1.svg" class="triangle">
+              <h6>{{ answer.voteCount }}</h6>
+              <img src="../../assets/icons/triangle-svgrepo-com_1.svg" class="triangle reverse">
+            </div>
+
+            <div class="details">
+              <p>{{ answer.text }}</p>
+              <div class="flex-container">
+                <p class="author">{{ answer.author.userName }}</p>
+                <p class="author score">{{ answer.author.score }}</p>
+                <p class="author">answered on {{ answer.creationDate | date: 'dd-MM-yyyy' }}</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="post-container">
+
+    <h5>Your Answer</h5>
+
+    <div class="post-element">
+      <textarea></textarea>
+    </div>
+
+    <div>
+      <button class="btn-primary" style="padding: 5px 20px">Post</button>
+    </div>
+
+  </div>
+
+</div>

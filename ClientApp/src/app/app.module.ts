@@ -12,6 +12,13 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
+import { QuestionsComponent } from './questions/questions.component';
+import { UsersComponent } from './users/users.component';
+import { QuestionComponent } from './question/question.component';
+import { CommonModule } from '@angular/common';
+import { UserComponent } from './user/user.component';
+import { CreateQuestionComponent } from './create-question/create-question.component';
+import { TagsComponent } from './tags/tags.component';
 
 @NgModule({
   declarations: [
@@ -19,17 +26,29 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
-    FetchDataComponent
+    FetchDataComponent,
+    QuestionsComponent,
+    QuestionComponent,
+    CreateQuestionComponent,
+    TagsComponent,
+    UsersComponent,
+    UserComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
+    CommonModule,
     FormsModule,
     ApiAuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
+      { path: 'questions', component: QuestionsComponent },
+      { path: 'questions/:id', component: QuestionComponent },
+      { path: 'create-question', component: CreateQuestionComponent },
+      { path: 'users', component: UsersComponent },
+      { path: 'users/:id', component: UserComponent },
     ])
   ],
   providers: [

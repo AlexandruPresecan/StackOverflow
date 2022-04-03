@@ -70,23 +70,52 @@ namespace StackOverflow.Services
                     Text = answer.Text,
                     CreationDate = answer.CreationDate,
                     VoteCount = answer.VoteCount,
-                    Question = new
-                    {
-                        Id = answer.Question.Id,
-                        Author = new
-                        {
-                            Id = answer.Question.AuthorId,
-                            UserName = answer.Question.Author.UserName,
-                            Email = answer.Question.Author.Email,
-                            Score = answer.Question.Author.Score
-                        },
-                        Title = answer.Question.Title,
-                        CreationDate = answer.Question.CreationDate,
-                        VoteCount = answer.Question.VoteCount,
-                        Tags = _tagsService.GetByQuestion(answer.Question)
-                    }
+                    QuestionId = answer.QuestionId
+                    //Question = new
+                    //{
+                    //    Id = answer.Question.Id,
+                    //    Author = new
+                    //    {
+                    //        Id = answer.Question.AuthorId,
+                    //        UserName = answer.Question.Author.UserName,
+                    //        Email = answer.Question.Author.Email,
+                    //        Score = answer.Question.Author.Score
+                    //    },
+                    //    Title = answer.Question.Title,
+                    //    CreationDate = answer.Question.CreationDate,
+                    //    VoteCount = answer.Question.VoteCount,
+                    //    Tags = _tagsService.GetByQuestion(answer.Question)
+                    //}
                 }
             );
+        }
+
+        public IEnumerable<object> GetByQuestion(Question question)
+        {
+            return _db.Answers
+                    .Include(a => a.Votes)
+                    .Include(a => a.Author)
+                    .Where(a => a.QuestionId == question.Id)
+                    .ToList()
+                    .OrderByDescending(a => a.VoteCount)
+                    .Select
+                    (
+                        a => new
+                        {
+                            Id = a.Id,
+                            Author = new
+                            {
+                                Id = a.AuthorId,
+                                UserName = a.Author.UserName,
+                                Email = a.Author.Email,
+                                Score = a.Author.Score
+                            },
+                            Text = a.Text,
+                            CreationDate = a.CreationDate,
+                            VoteCount = a.VoteCount,
+                            QuestionId = a.QuestionId
+                        }
+                    );
         }
 
         public ServiceResult Post(AnswerDTO value)

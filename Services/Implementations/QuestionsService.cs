@@ -41,6 +41,7 @@ namespace StackOverflow.Services
                                 Score = q.Author.Score
                             },
                             Title = q.Title,
+                            Text = q.Text,
                             CreationDate = q.CreationDate,
                             VoteCount = q.VoteCount,
                             Tags = _tagsService.GetByQuestion(q)
@@ -76,24 +77,7 @@ namespace StackOverflow.Services
                     Text = question.Text,
                     CreationDate = question.CreationDate,
                     VoteCount = question.VoteCount,
-                    Answers = question.Answers
-                        .Select
-                        (
-                            a => new
-                            {
-                                Id = a.Id,
-                                Author = new
-                                {
-                                    Id = a.AuthorId,
-                                    UserName = a.Author.UserName,
-                                    Email = a.Author.Email,
-                                    Score = a.Author.Score
-                                },
-                                CreationDate = a.CreationDate,
-                                Text = a.Text,
-                                VoteCount = _answersService.GetVoteCount(a.Id)
-                            }
-                        ),
+                    Answers = _answersService.GetByQuestion(question),
                     Tags = _tagsService.GetByQuestion(question)
                 }
             );

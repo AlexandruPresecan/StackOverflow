@@ -1,0 +1,29 @@
+<div>
+
+  <div class="post-container">
+
+    <h5>Ask Question</h5>
+
+    <div class="post-element">
+      <h6>Title</h6>
+      <input type="text">
+    </div>
+
+    <div class="post-element">
+      <h6>Body</h6>
+      <textarea></textarea>
+    </div>
+
+    <div class="post-element">
+      <h6>Tags</h6>
+      <input #tag (change)="addTag()" type="text">
+      <app-tags [tags]="question.tags"></app-tags>
+    </div>
+
+    <div>
+      <button class="btn-primary" style="padding: 5px 20px">Post</button>
+    </div>
+
+  </div>
+
+</div>
