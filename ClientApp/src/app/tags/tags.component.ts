@@ -7,7 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 
 export class TagsComponent {
-
   @Input() tags: string[] = [];
-
 }

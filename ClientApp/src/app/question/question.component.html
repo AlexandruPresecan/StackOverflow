@@ -4,54 +4,28 @@
 
   <div class="flex-container">
 
-    <div class="votes">
-      <img src="../../assets/icons/triangle-svgrepo-com_1.svg" class="triangle">
-      <h6>{{ question.voteCount }}</h6>
-      <img src="../../assets/icons/triangle-svgrepo-com_1.svg" class="triangle reverse">
-    </div>
+    <app-votes [votes]="question.voteCount"></app-votes>
 
     <div class="details">
-
       <h3>{{ question.title }}</h3>
       <p>{{ question.text }}</p>
       <app-tags [tags]="question.tags"></app-tags>
+      <hr/>
       <div class="flex-container">
-        <p class="author">{{ question.author.userName }}</p>
-        <p class="author score">{{ question.author.score }}</p>
-        <p class="author">asked on {{ question.creationDate | date: 'dd-MM-yyyy' }}</p>
+        <span class="author">{{ question.author == undefined ? "" : question.author.userName }}</span>
+        <span class="author score">{{ question.author == undefined ? "" : question.author.score }}</span>
+        <span class="author">asked on {{ question.creationDate | date: 'dd-MM-yyyy' }}</span>
       </div>
-
+      <br/>
+      <h4>{{ question.answers == undefined ? "" : question.answers.length }} Answers</h4>
       <div *ngIf="question.answers">
-
-        <h4>{{question.answers.length}} Answers</h4>
-        <div *ngFor="let answer of question.answers" class="question post-container">
-
-          <div class="flex-container">
-
-            <div class="votes">
-              <img src="../../assets/icons/triangle-svgrepo-com_1.svg" class="triangle">
-              <h6>{{ answer.voteCount }}</h6>
-              <img src="../../assets/icons/triangle-svgrepo-com_1.svg" class="triangle reverse">
-            </div>
-
-            <div class="details">
-              <p>{{ answer.text }}</p>
-              <div class="flex-container">
-                <p class="author">{{ answer.author.userName }}</p>
-                <p class="author score">{{ answer.author.score }}</p>
-                <p class="author">answered on {{ answer.creationDate | date: 'dd-MM-yyyy' }}</p>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
+        <app-answers [answers]="question.answers"></app-answers>
       </div>
-
     </div>
 
   </div>
+
+  <hr/>
 
   <div class="post-container">
 

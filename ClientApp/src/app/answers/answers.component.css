@@ -4,6 +4,14 @@
   gap: 15px;
 }
 
+.details {
+  width: 100%;
+}
+
+.author {
+  font-size: 80%;
+}
+
 .score {
   font-weight: bold;
 }

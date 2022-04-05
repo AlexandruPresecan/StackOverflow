@@ -1,9 +1,9 @@
 <header>
   <nav
-    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
+    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light navbar-background box-shadow mb-3"
   >
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">StackOverflow</a>
+      <a class="navbar-brand text-light" [routerLink]="['/']">StackOverflow</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -27,16 +27,16 @@
           <li class="nav-item"
               [routerLinkActive]="['link-active']"
               [routerLinkActiveOptions]="{ exact: true }">
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
+            <a class="nav-link text-light" [routerLink]="['/']">Home</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/questions']">Questions</a>
+            <a class="nav-link text-light" [routerLink]="['/questions']">Questions</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/users']">Users</a>
+            <a class="nav-link text-light" [routerLink]="['/users']">Users</a>
           </li>
           <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/tags']">Tags</a>
+            <a class="nav-link text-light" [routerLink]="['/tags']">Tags</a>
           </li>
         </ul>
         <app-login-menu></app-login-menu>

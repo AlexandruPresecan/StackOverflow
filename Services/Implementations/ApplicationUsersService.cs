@@ -66,6 +66,7 @@ namespace StackOverflow.Services
                             {
                                 Id = q.Id,
                                 Title = q.Title,
+                                Text = q.Text,
                                 CreationDate = q.CreationDate,
                                 VoteCount = _questionService.GetVoteCount(q.Id),
                                 Tags = _tagsService.GetByQuestion(q)

@@ -7,8 +7,6 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
@@ -19,20 +17,24 @@ import { CommonModule } from '@angular/common';
 import { UserComponent } from './user/user.component';
 import { CreateQuestionComponent } from './create-question/create-question.component';
 import { TagsComponent } from './tags/tags.component';
+import { VotesComponent } from './votes/votes.component';
+import { QuestionsPageComponent } from './questions-page/questions-page.component';
+import { AnswersComponent } from './answers/answers.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    CounterComponent,
-    FetchDataComponent,
     QuestionsComponent,
     QuestionComponent,
+    QuestionsPageComponent,
     CreateQuestionComponent,
+    AnswersComponent,
     TagsComponent,
     UsersComponent,
     UserComponent,
+    VotesComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -42,9 +44,7 @@ import { TagsComponent } from './tags/tags.component';
     ApiAuthorizationModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
-      { path: 'questions', component: QuestionsComponent },
+      { path: 'questions', component: QuestionsPageComponent },
       { path: 'questions/:id', component: QuestionComponent },
       { path: 'create-question', component: CreateQuestionComponent },
       { path: 'users', component: UsersComponent },

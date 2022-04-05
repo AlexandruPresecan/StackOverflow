@@ -1,17 +1,12 @@
 .flex-container {
   display: flex;
+  justify-content: flex-start;
   flex-direction: row;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .user {
-  border-style: dashed;
-  border-width: 1px;
-  border-left-width: 0px;
-  border-right-width: 0px;
-  border-color: blueviolet;
-}
-
-.score {
-  font-weight: bold;
+  width: 30%;
+  margin: 10px 10px;
 }

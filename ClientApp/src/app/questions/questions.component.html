@@ -1,14 +1,7 @@
 <div>
-
-  <div class="header-container">
-    <h2 id="tableLabel">Questions</h2>
-    <button class="btn-primary" (click)="createQuestion()">Ask Question</button>
-  </div>
-
-  <p *ngIf="!questions"><em>Loading...</em></p>
-
+  <span *ngIf="!questions"><em>Loading...</em></span>
   <div *ngIf="questions">
-    <div *ngFor="let question of questions" class="flex-container question post-container hover-container" (click)="redirectToId(question.id)">
+    <div *ngFor="let question of questions" class="flex-container question post-container hover-container" (click)="redirectToQuestion(question.id)">
       <div>
         <span>Votes: {{ question.voteCount }}</span>
       </div>
@@ -16,9 +9,10 @@
         <h5>{{ question.title }}</h5>
         <p>{{ question.text }}</p>
         <app-tags [tags]="question.tags"></app-tags>
+        <hr/>
         <div class="flex-container">
-          <span class="author">{{ question.author.userName }}</span>
-          <span class="author score">{{ question.author.score }}</span>
+          <span class="author">{{ question.author == undefined ? "" : question.author.userName }}</span>
+          <span class="author score">{{ question.author == undefined ? "" :question.author.score }}</span>
           <span class="author">asked on {{ question.creationDate | date: 'dd-MM-yyyy' }}</span>
         </div>
       </div>

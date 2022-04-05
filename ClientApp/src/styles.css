@@ -18,16 +18,16 @@ code {
 }
 
 .btn-primary:hover {
-  background-color: purple;
+  background-color: rebeccapurple;
   box-shadow: 1px 1px 3px 1px black;
 }
 
 .btn-primary:active {
-  background-color: purple;
+  background-color: rebeccapurple;
 }
 
 .btn-primary:focus {
-  background-color: purple;
+  background-color: rebeccapurple;
 }
 
 .post-container {

@@ -1,0 +1,25 @@
+.votes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.triangle {
+  width: 25px;
+  height: 25px;
+  opacity: 0.5;
+}
+
+.triangle:hover {
+  opacity: 1;
+  filter: invert(55%) sepia(55%) saturate(2686%) hue-rotate(84deg) brightness(113%) contrast(130%);
+  cursor: pointer;
+}
+
+.reverse {
+  transform: rotate(-180deg);
+}
+
+.reverse:hover {
+  filter: invert(17%) sepia(90%) saturate(7455%) hue-rotate(358deg) brightness(103%) contrast(113%);
+}
