@@ -1,0 +1,6 @@
+<div *ngIf="tags" class="flex-container">
+  <div *ngFor="let tag of tags" class="tag post-container hover-container" (click)="redirectToTag(tag.name)">
+    <app-tags [tags]="[tag.name]"></app-tags>
+    <span>{{ tag.questions.length }} questions</span>
+  </div>
+</div>

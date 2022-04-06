@@ -50,3 +50,7 @@ code {
   background-color: lightgray;
   cursor: pointer;
 }
+
+.center-items {
+  align-items: center
+}

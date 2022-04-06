@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Question } from '../../models/question.model';
 
 @Component({
   selector: 'app-create-question',
@@ -9,10 +10,12 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 export class CreateQuestionComponent {
 
   public question: Question = {
+    id: 0,
+    voteCount: 0,
     title: "",
     text: "",
-    authorId: 0,
     tags: [],
+    creationDate: new Date()
   };
 
   @ViewChild('tag') tag!: ElementRef;
@@ -21,11 +24,4 @@ export class CreateQuestionComponent {
     this.question.tags.push(this.tag.nativeElement.value);
     this.tag.nativeElement.value = "";
   }
-}
-
-interface Question {
-  title: string;
-  text: string;
-  authorId: number;
-  tags: string[];
 }

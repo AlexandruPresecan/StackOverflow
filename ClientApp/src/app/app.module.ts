@@ -20,6 +20,10 @@ import { TagsComponent } from './tags/tags.component';
 import { VotesComponent } from './votes/votes.component';
 import { QuestionsPageComponent } from './questions-page/questions-page.component';
 import { AnswersComponent } from './answers/answers.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { TagsPageComponent } from './tags-page/tags-page.component';
+import { TaggedQuestionsPageComponent } from './tagged-questions-page/tagged-questions-page.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +38,11 @@ import { AnswersComponent } from './answers/answers.component';
     TagsComponent,
     UsersComponent,
     UserComponent,
-    VotesComponent
+    VotesComponent,
+    LoginComponent,
+    RegisterComponent,
+    TagsPageComponent,
+    TaggedQuestionsPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -46,9 +54,14 @@ import { AnswersComponent } from './answers/answers.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'questions', component: QuestionsPageComponent },
       { path: 'questions/:id', component: QuestionComponent },
+      { path: 'questions/tagged/:tag', component: TaggedQuestionsPageComponent },
       { path: 'create-question', component: CreateQuestionComponent },
       { path: 'users', component: UsersComponent },
       { path: 'users/:id', component: UserComponent },
+      { path: 'register', component: RegisterComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'tags', component: TagsPageComponent },
+      { path: 'tags/:id', component: TagsPageComponent }
     ])
   ],
   providers: [

@@ -17,14 +17,24 @@ namespace StackOverflow.Services
         {
             return new ServiceResult
             (
-                _db.Tags.Select
-                (
-                    t => new 
-                    { 
-                        Id = t.Id, 
-                        Name = t.Name 
-                    }
-                )
+                _db.Tags
+                    .Select
+                    (
+                        t => new
+                        {
+                            Id = t.Id,
+                            Name = t.Name,
+                            Questions = _db.Questions
+                                .Include(q => q.QuestionTags)
+                                .Where
+                                (
+                                    q => q.QuestionTags
+                                        .Select(qt => qt.TagId)
+                                        .Contains(t.Id)
+                                )
+                                .ToList()
+                        }
+                    )
             );
         }
 
@@ -40,7 +50,16 @@ namespace StackOverflow.Services
                 new
                 {
                     Id = tag.Id,
-                    Name = tag.Name
+                    Name = tag.Name,
+                    Questions = _db.Questions
+                        .Include(q => q.QuestionTags)
+                        .Where
+                        (
+                            q => q.QuestionTags
+                                .Select(qt => qt.TagId)
+                                .Contains(tag.Id)
+                        )
+                        .ToList()
                 }
             );
         }

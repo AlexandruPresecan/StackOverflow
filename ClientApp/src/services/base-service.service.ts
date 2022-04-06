@@ -8,7 +8,7 @@ export class BaseService<T> {
 
   protected route: string = "";
 
-  constructor(private http: HttpClient) {
+  constructor(protected http: HttpClient) {
 
   }
 

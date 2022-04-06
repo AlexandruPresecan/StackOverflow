@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StackOverflow.Data;
 using StackOverflow.DTOs;
 using StackOverflow.Models;
@@ -27,6 +28,48 @@ namespace StackOverflow.Services
                 _db.Questions
                     .Include(q => q.Votes)
                     .Include(q => q.Author)
+                    .OrderBy(q => q.CreationDate)
+                    .Select
+                    (
+                        q => new
+                        {
+                            Id = q.Id,
+                            Author = new
+                            {
+                                Id = q.AuthorId,
+                                UserName = q.Author.UserName,
+                                Email = q.Author.Email,
+                                Score = q.Author.Score
+                            },
+                            Title = q.Title,
+                            Text = q.Text,
+                            CreationDate = q.CreationDate,
+                            VoteCount = q.VoteCount,
+                            Tags = _tagsService.GetByQuestion(q)
+                        }
+                    )
+            );
+        }
+
+        public ServiceResult Get(string tagName)
+        {
+            Tag? tag = _tagsService.GetByName(tagName);
+
+            if (tag == null)
+                return new ServiceResult("Tag not found", false);
+
+            return new ServiceResult
+            (
+                _db.Questions
+                    .Include(q => q.Votes)
+                    .Include(q => q.Author)
+                    .Include(q => q.QuestionTags)
+                    .Where
+                    (
+                        q => q.QuestionTags
+                            .Select(qt => qt.TagId)
+                            .Contains(tag.Id)
+                    )
                     .OrderBy(q => q.CreationDate)
                     .Select
                     (
