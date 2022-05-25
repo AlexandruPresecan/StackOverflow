@@ -77,7 +77,7 @@ namespace StackOverflow.Services
                 .Select(qt => qt.Tag.Name);
         }
 
-        public ServiceResult Post(string value)
+        public ServiceResult Post(string value, HttpContext httpContext)
         {
             if (GetByName(value) != null)
                 return new ServiceResult("Tag already exists", false);
@@ -90,8 +90,11 @@ namespace StackOverflow.Services
             return new ServiceResult(tag);
         }
 
-        public ServiceResult Put(int id, string value)
+        public ServiceResult Put(int id, string value, HttpContext httpContext)
         {
+            if (!Convert.ToBoolean(httpContext.Items["Admin"]))
+                return new ServiceResult("Only admins can edit tags", false);
+
             Tag? tag = _db.Tags.FirstOrDefault(t => t.Id == id);
 
             if (tag == null)
@@ -108,8 +111,11 @@ namespace StackOverflow.Services
             return new ServiceResult(tag);
         }
 
-        public ServiceResult Delete(int id)
+        public ServiceResult Delete(int id, HttpContext httpContext)
         {
+            if (!Convert.ToBoolean(httpContext.Items["Admin"]))
+                return new ServiceResult("Only admins can delete tags", false);
+
             Tag? tag = _db.Tags.FirstOrDefault(t => t.Id == id);
 
             if (tag == null)

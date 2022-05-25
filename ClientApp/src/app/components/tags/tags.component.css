@@ -1,0 +1,19 @@
+.flex-container {
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.tag {
+  background-color: blueviolet;
+  border-radius: 5px;
+  color: white;
+  padding: 2px 5px;
+}
+
+.tag:hover {
+  background-color: rebeccapurple;
+  box-shadow: 1px 1px 3px 1px black;
+  cursor: pointer
+}

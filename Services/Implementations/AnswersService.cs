@@ -8,12 +8,10 @@ namespace StackOverflow.Services
     public class AnswersService : IService<int, AnswerDTO>
     {
         private readonly ApplicationDbContext _db;
-        private readonly TagsService _tagsService;
 
-        public AnswersService(ApplicationDbContext db, TagsService tagsService)
+        public AnswersService(ApplicationDbContext db)
         {
             _db = db;
-            _tagsService = tagsService;
         }
 
         public ServiceResult Get()
@@ -33,11 +31,22 @@ namespace StackOverflow.Services
                                 Id = a.AuthorId,
                                 UserName = a.Author.UserName,
                                 Email = a.Author.Email,
-                                Score = a.Author.Score
+                                Score = a.Author.Score,
+                                Banned = a.Author.Banned
                             },
                             Text = a.Text,
                             CreationDate = a.CreationDate,
                             VoteCount = a.VoteCount,
+                            Votes = a.Votes
+                                .Select
+                                (
+                                    v => new
+                                        {
+                                            Id = v.Id,
+                                            AuthorId = v.AuthorId,
+                                            Value = v.Value,
+                                        }
+                                ),
                             QuestionId = a.QuestionId
                         }
                     )
@@ -63,29 +72,25 @@ namespace StackOverflow.Services
                     Author = new
                     {
                         Id = answer.AuthorId,
-                        UserName = answer.Author.UserName,
-                        Email = answer.Author.Email,
-                        Score = answer.Author.Score
+                        UserName = answer.Author?.UserName,
+                        Email = answer.Author?.Email,
+                        Score = answer.Author?.Score,
+                        Banned = answer.Author?.Banned
                     },
                     Text = answer.Text,
                     CreationDate = answer.CreationDate,
                     VoteCount = answer.VoteCount,
+                    Votes = answer.Votes?
+                        .Select
+                        (
+                            v => new
+                            {
+                                Id = v.Id,
+                                AuthorId = v.AuthorId,
+                                Value = v.Value,
+                            }
+                        ),
                     QuestionId = answer.QuestionId
-                    //Question = new
-                    //{
-                    //    Id = answer.Question.Id,
-                    //    Author = new
-                    //    {
-                    //        Id = answer.Question.AuthorId,
-                    //        UserName = answer.Question.Author.UserName,
-                    //        Email = answer.Question.Author.Email,
-                    //        Score = answer.Question.Author.Score
-                    //    },
-                    //    Title = answer.Question.Title,
-                    //    CreationDate = answer.Question.CreationDate,
-                    //    VoteCount = answer.Question.VoteCount,
-                    //    Tags = _tagsService.GetByQuestion(answer.Question)
-                    //}
                 }
             );
         }
@@ -106,20 +111,34 @@ namespace StackOverflow.Services
                             Author = new
                             {
                                 Id = a.AuthorId,
-                                UserName = a.Author.UserName,
-                                Email = a.Author.Email,
-                                Score = a.Author.Score
+                                UserName = a.Author?.UserName,
+                                Email = a.Author?.Email,
+                                Score = a.Author?.Score,
+                                Banned = a.Author?.Banned
                             },
                             Text = a.Text,
                             CreationDate = a.CreationDate,
                             VoteCount = a.VoteCount,
+                            Votes = a.Votes?
+                                .Select
+                                (
+                                    v => new
+                                    {
+                                        Id = v.Id,
+                                        AuthorId = v.AuthorId,
+                                        Value = v.Value,
+                                    }
+                                ),
                             QuestionId = a.QuestionId
                         }
                     );
         }
 
-        public ServiceResult Post(AnswerDTO value)
+        public ServiceResult Post(AnswerDTO value, HttpContext httpContext)
         {
+            if (value.AuthorId == null || !Convert.ToBoolean(httpContext.Items["Admin"]))
+                value.AuthorId = httpContext.Items["UserId"]?.ToString();
+
             if (_db.Users.FirstOrDefault(u => u.Id == value.AuthorId) == null)
                 return new ServiceResult("Author Id not found", false);
 
@@ -140,12 +159,15 @@ namespace StackOverflow.Services
             return new ServiceResult("Answer created");
         }
 
-        public ServiceResult Put(int id, AnswerDTO value)
+        public ServiceResult Put(int id, AnswerDTO value, HttpContext httpContext)
         {
             Answer? answer = _db.Answers.FirstOrDefault(a => a.Id == id);
 
             if (answer == null)
                 return new ServiceResult("Answer Id not found", false);
+
+            if (!Convert.ToBoolean(httpContext.Items["Admin"]) && httpContext.Items["UserId"]?.ToString() != answer.AuthorId)
+                return new ServiceResult("Answer does not belong to user", false);
 
             answer.Text = value.Text == null ? answer.Text : value.Text;
 
@@ -155,12 +177,18 @@ namespace StackOverflow.Services
             return new ServiceResult("Answer updated");
         }
 
-        public ServiceResult Delete(int id)
+        public ServiceResult Delete(int id, HttpContext httpContext)
         {
             Answer? answer = _db.Answers.FirstOrDefault(a => a.Id == id);
 
             if (answer == null)
                 return new ServiceResult("Answer Id not found", false);
+
+            if (!Convert.ToBoolean(httpContext.Items["Admin"]) && httpContext.Items["UserId"]?.ToString() != answer.AuthorId)
+                return new ServiceResult("Answer does not belong to user", false);
+
+            foreach (AnswerVote vote in _db.AnswerVotes.Where(v => v.AnswerId == answer.Id))
+                _db.AnswerVotes.Remove(vote);
 
             _db.Answers.Remove(answer);
             _db.SaveChanges();

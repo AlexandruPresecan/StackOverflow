@@ -1,0 +1,43 @@
+<div class="post-container center-items">
+
+  <h3>Account Details</h3>
+  <hr />
+
+  <div class="flex-container">
+    <input type="checkbox" (change)="onCheck('email', $event)" />
+    <h5>Change Email</h5>
+  </div>
+  <div [hidden]="!checks.get('email')">
+    <h6>New Email</h6>
+    <input #email type="text" />
+  </div>
+
+  <div class="flex-container">
+    <input type="checkbox" (change)="onCheck('userName', $event)" />
+    <h5>Change Username</h5>
+  </div>
+  <div [hidden]="!checks.get('userName')">
+    <h6>New Username</h6>
+    <input #userName type="text">
+  </div>
+
+  <div class="flex-container">
+    <input type="checkbox" (change)="onCheck('password', $event)" />
+    <h5>Change Password</h5>
+  </div>
+  <div [hidden]="!checks.get('password')">
+    <h6>New Password</h6>
+    <input #newPassword type="password" />
+    <h6>Confirm New Password</h6>
+    <input #confirmPassword type="password" />
+  </div>
+
+  <h5>Password</h5>
+  <input #password type="password" />
+
+  <button class="btn-primary" (click)="updateUser()">Update Account</button>
+
+  <span class="error" [hidden]="error.length <= 0">{{ error }}</span>
+  <span class="success" [hidden]="success.length <= 0">{{ success }}</span>
+
+</div>

@@ -1,0 +1,5 @@
+<div class="votes">
+  <img src="../../assets/icons/triangle-svgrepo-com_1.svg" class="triangle" [class.green]="wasUpVote()" (click)="upVote()">
+  <h6>{{ voteCount }}</h6>
+  <img src="../../assets/icons/triangle-svgrepo-com_1.svg" class="triangle reverse" [class.red]="wasDownVote()" (click)="downVote()">
+</div>

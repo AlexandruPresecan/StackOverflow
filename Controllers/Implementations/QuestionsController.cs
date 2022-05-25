@@ -6,62 +6,22 @@ namespace StackOverflow.Controllers.Implementations
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class QuestionsController: ControllerBase
+    public class QuestionsController: ApiController<int, QuestionDTO>
     {
-        private readonly QuestionsService _service;
-
-        public QuestionsController(QuestionsService service)
+        public QuestionsController(QuestionsService service) : base(service)
         {
-            _service = service;
         }
 
-        public IActionResult ServiceResultToAction(ServiceResult result)
+        [HttpGet("tagged/{tag}")]
+        public IActionResult GetByTag(string tag)
         {
-            return result.Success ? Ok(result.Value) : BadRequest(result.Value);
+            return ServiceResultToAction(((QuestionsService)_service).GetByTag(tag));
         }
 
-        // GET: api/<ApiController>
-        [HttpGet]
-        public IActionResult Get([FromQuery(Name = "tag")] string? tag = null)
+        [HttpGet("search/{name}")]
+        public IActionResult GetByName(string name)
         {
-            if (tag == null)
-                return ServiceResultToAction(_service.Get());
-
-            return ServiceResultToAction(_service.Get(tag));
-        }
-
-        // GET api/<ApiController>/5
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            return ServiceResultToAction(_service.Get(id));
-        }
-
-        // POST api/<ApiController>
-        [HttpPost]
-        public IActionResult Post([FromBody]QuestionDTO value)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest("Invalid Field");
-
-            return ServiceResultToAction(_service.Post(value));
-        }
-
-        // PUT api/<ApiController>/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] QuestionDTO value)
-        {
-            if (!ModelState.IsValid)
-                return BadRequest("Invalid Field");
-
-            return ServiceResultToAction(_service.Put(id, value));
-        }
-
-        // DELETE api/<ApiController>/5
-        [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
-            return ServiceResultToAction(_service.Delete(id));
+            return ServiceResultToAction(((QuestionsService)_service).GetByName(name));
         }
     }
 }

@@ -47,7 +47,7 @@ namespace StackOverflow.Services
             );
         }
 
-        public ServiceResult Post(QuestionTagDTO value)
+        public ServiceResult Post(QuestionTagDTO value, HttpContext httpContext)
         {
             if (_db.Questions.FirstOrDefault(q => q.Id == value.QuestionId) == null)
                 return new ServiceResult("Question Id not found", false);
@@ -61,7 +61,7 @@ namespace StackOverflow.Services
             return new ServiceResult("Question Tag created");
         }
 
-        public ServiceResult Put(int id, QuestionTagDTO value)
+        public ServiceResult Put(int id, QuestionTagDTO value, HttpContext httpContext)
         {
             QuestionTag? questionTag = _db.QuestionTags.FirstOrDefault(qt => qt.Id == id);
 
@@ -71,7 +71,7 @@ namespace StackOverflow.Services
             return new ServiceResult("Question Tag updated");
         }
 
-        public ServiceResult Delete(int id)
+        public ServiceResult Delete(int id, HttpContext httpContext)
         {
             QuestionTag? questionTag = _db.QuestionTags.FirstOrDefault(qt => qt.Id == id);
 

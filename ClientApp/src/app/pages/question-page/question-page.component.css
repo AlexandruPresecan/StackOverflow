@@ -1,0 +1,17 @@
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+}
+
+.author {
+  font-size: 80%;
+}
+
+.score {
+  font-weight: bold;
+}
+
+.details {
+  width: 100%;
+}

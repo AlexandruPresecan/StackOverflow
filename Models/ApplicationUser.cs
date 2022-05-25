@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using StackOverflow.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace StackOverflow.Models
@@ -8,6 +7,7 @@ namespace StackOverflow.Models
     {
         [Required]
         public int Score { get; set; }
+        public bool Banned { get; set; }
        
         public ICollection<Question>? Questions { get; set; }
         public ICollection<Answer>? Answers { get; set; }

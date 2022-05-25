@@ -54,3 +54,15 @@ code {
 .center-items {
   align-items: center
 }
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}
+
+.extend {
+    width: 100%;
+}

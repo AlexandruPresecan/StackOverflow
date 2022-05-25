@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using StackOverflow.Data;
+﻿using StackOverflow.Data;
 using StackOverflow.DTOs;
 using StackOverflow.Enums;
 using StackOverflow.Models;
+using System.Security.Claims;
 
 namespace StackOverflow.Services
 {
@@ -53,13 +53,19 @@ namespace StackOverflow.Services
             );
         }
 
-        public ServiceResult Post(AnswerVoteDTO value)
+        public ServiceResult Post(AnswerVoteDTO value, HttpContext httpContext)
         {
+            if (value.AuthorId == null || !Convert.ToBoolean(httpContext.Items["Admin"]))
+                value.AuthorId = httpContext.Items["UserId"]?.ToString();
+
             if (_db.Users.FirstOrDefault(u => u.Id == value.AuthorId) == null)
                 return new ServiceResult("Author Id not found", false);
 
             if (_db.Answers.FirstOrDefault(a => a.Id == value.AnswerId) == null)
                 return new ServiceResult("Answer Id not found", false);
+
+            if (_db.Answers.FirstOrDefault(a => a.Id == value.AnswerId)?.AuthorId == value.AuthorId)
+                return new ServiceResult("Cannot vote your own answer", false);
 
             if (_db.AnswerVotes.FirstOrDefault(v => v.AuthorId == value.AuthorId && v.AnswerId == value.AnswerId) != null)
                 return new ServiceResult("User already voted this answer", false);
@@ -76,12 +82,15 @@ namespace StackOverflow.Services
             return new ServiceResult("Answer Vote created");
         }
 
-        public ServiceResult Put(int id, AnswerVoteDTO value)
+        public ServiceResult Put(int id, AnswerVoteDTO value, HttpContext httpContext)
         {
             AnswerVote? vote = _db.AnswerVotes.FirstOrDefault(v => v.Id == id);
 
             if (vote == null)
                 return new ServiceResult("Answer Vote Id not found", false);
+
+            if (!Convert.ToBoolean(httpContext.Items["Admin"]) && httpContext.Items["UserId"]?.ToString() != vote.AuthorId)
+                return new ServiceResult("Vote does not belong to user", false);
 
             bool voteChanged = vote.Value != value.Value;
             vote.Value = value.Value;
@@ -99,12 +108,15 @@ namespace StackOverflow.Services
             return new ServiceResult("Answer Vote updated");
         }
 
-        public ServiceResult Delete(int id)
+        public ServiceResult Delete(int id, HttpContext httpContext)
         {
             AnswerVote? vote = _db.AnswerVotes.FirstOrDefault(v => v.Id == id);
 
             if (vote == null)
                 return new ServiceResult("Answer Vote Id not found", false);
+
+            if (!Convert.ToBoolean(httpContext.Items["Admin"]) && httpContext.Items["UserId"]?.ToString() != vote.AuthorId)
+                return new ServiceResult("Vote does not belong to user", false);
 
             Answer? answer = _db.Answers.FirstOrDefault(a => a.Id == vote.AnswerId);
             _usersService.UpdateScore(answer.AuthorId, vote.Value == VoteValue.UpVote ? -10 : 2);

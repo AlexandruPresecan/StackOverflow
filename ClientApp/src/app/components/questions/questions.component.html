@@ -1,0 +1,26 @@
+<div>
+  <span *ngIf="!questions"><em>Loading...</em></span>
+  <div *ngIf="questions">
+    <div *ngFor="let question of questions" class="flex-container question post-container hover-container" (click)="redirectToQuestion(question.id)">
+      <div>
+        <span>Votes: {{ question.voteCount }}</span>
+      </div>
+      <div class="details">
+        <h5>{{ question.title }}</h5>
+        <p>{{ question.text }}</p>
+        <app-tags [tags]="question.tags"></app-tags>
+        <hr/>
+        <div class="flex-container">
+          <span class="author flex-container" (click)="redirectToAuthor(question.author)">
+            {{ question.author == undefined ? "" : question.author.userName }}
+            <div *ngIf="question.author == undefined ? false : question.author.banned">
+              <span class="error">[Banned]</span>
+            </div>
+          </span>
+          <span class="author score">{{ question.author == undefined ? "" :question.author.score }}</span>
+          <span class="author">asked on {{ question.creationDate | date: 'dd-MM-yyyy' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

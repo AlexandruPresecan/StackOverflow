@@ -5,44 +5,53 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { HomeComponent } from './home/home.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
-import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
-import { QuestionsComponent } from './questions/questions.component';
-import { UsersComponent } from './users/users.component';
-import { QuestionComponent } from './question/question.component';
 import { CommonModule } from '@angular/common';
-import { UserComponent } from './user/user.component';
-import { CreateQuestionComponent } from './create-question/create-question.component';
-import { TagsComponent } from './tags/tags.component';
-import { VotesComponent } from './votes/votes.component';
-import { QuestionsPageComponent } from './questions-page/questions-page.component';
-import { AnswersComponent } from './answers/answers.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { TagsPageComponent } from './tags-page/tags-page.component';
-import { TaggedQuestionsPageComponent } from './tagged-questions-page/tagged-questions-page.component';
+import { NavMenuComponent } from './components/nav-menu/nav-menu.component';
+import { VotesComponent } from './components/votes/votes.component';
+import { QuestionsComponent } from './components/questions/questions.component';
+import { QuestionsPageComponent } from './pages/questions-page/questions-page.component';
+import { CreateQuestionPageComponent } from './pages/create-question-page/create-question-page.component';
+import { CreateAnswerComponent } from './components/create-answer/create-answer.component';
+import { TagsComponent } from './components/tags/tags.component';
+import { UsersPageComponent } from './pages/users-page/users-page.component';
+import { UserPageComponent } from './pages/user-page/user-page.component';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { RegisterPageComponent } from './pages/register-page/register-page.component';
+import { TagsPageComponent } from './pages/tags-page/tags-page.component';
+import { TaggedQuestionsPageComponent } from './pages/tagged-questions-page/tagged-questions-page.component';
+import { QuestionPageComponent } from './pages/question-page/question-page.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
+import { AnswerVotesComponent } from './components/votes/answer-votes.component';
+import { QuestionVotesComponent } from './components/votes/question-votes.component';
+import { AccountPageComponent } from './pages/account-page/account-page.component';
+import { AnswerComponent } from './components/answer/answer.component';
+import { AnswersComponent } from './components/answers/answers.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
-    QuestionsComponent,
-    QuestionComponent,
-    QuestionsPageComponent,
-    CreateQuestionComponent,
-    AnswersComponent,
-    TagsComponent,
-    UsersComponent,
-    UserComponent,
     VotesComponent,
-    LoginComponent,
-    RegisterComponent,
+    QuestionsComponent,
+    QuestionsPageComponent,
+    CreateQuestionPageComponent,
+    CreateAnswerComponent,
+    AnswersComponent,
+    AnswerComponent,
+    TagsComponent,
+    UsersPageComponent,
+    UserPageComponent,
+    LoginPageComponent,
+    RegisterPageComponent,
     TagsPageComponent,
-    TaggedQuestionsPageComponent
+    TaggedQuestionsPageComponent,
+    QuestionPageComponent,
+    HomePageComponent,
+    AnswerVotesComponent,
+    QuestionVotesComponent,
+    AccountPageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -51,17 +60,17 @@ import { TaggedQuestionsPageComponent } from './tagged-questions-page/tagged-que
     FormsModule,
     ApiAuthorizationModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', component: HomePageComponent, pathMatch: 'full' },
       { path: 'questions', component: QuestionsPageComponent },
-      { path: 'questions/:id', component: QuestionComponent },
+      { path: 'questions/:id', component: QuestionPageComponent },
       { path: 'questions/tagged/:tag', component: TaggedQuestionsPageComponent },
-      { path: 'create-question', component: CreateQuestionComponent },
-      { path: 'users', component: UsersComponent },
-      { path: 'users/:id', component: UserComponent },
-      { path: 'register', component: RegisterComponent },
-      { path: 'login', component: LoginComponent },
-      { path: 'tags', component: TagsPageComponent },
-      { path: 'tags/:id', component: TagsPageComponent }
+      { path: 'create-question', component: CreateQuestionPageComponent },
+      { path: 'users', component: UsersPageComponent },
+      { path: 'users/:id', component: UserPageComponent },
+      { path: 'register', component: RegisterPageComponent },
+      { path: 'login', component: LoginPageComponent },
+      { path: 'account', component: AccountPageComponent },
+      { path: 'tags', component: TagsPageComponent }
     ])
   ],
   providers: [

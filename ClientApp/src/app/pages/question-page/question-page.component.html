@@ -1,0 +1,60 @@
+<p *ngIf="!question"><em>Loading...</em></p>
+
+<div *ngIf="question" class="post-container">
+
+  <div class="flex-container">
+
+    <app-question-votes [voteCount]="question.voteCount" [votes]="question.votes" [elementId]="question.id" (onVote)="ngOnInit()"></app-question-votes>
+
+    <div class="details">
+
+      <h5 [hidden]="!isEditing">Title</h5>
+      <input #title class="extend" [hidden]="!isEditing" />
+      <h3 [hidden]="isEditing">{{ question.title }}</h3>
+
+      <br [hidden]="!isEditing" />
+      <br [hidden]="!isEditing" />
+
+      <h5 [hidden]="!isEditing">Body</h5>
+      <textarea #text class="extend" [hidden]="!isEditing"></textarea>
+      <p [hidden]="isEditing">{{ question.text }}</p>
+
+      <br [hidden]="!isEditing" />
+      <br [hidden]="!isEditing" />
+
+      <h5 [hidden]="!isEditing">Tags</h5>
+      <input #tags class="extend" (input)="setTags()" [hidden]="!isEditing" />
+      <app-tags [tags]="question.tags"></app-tags>
+
+      <hr />
+
+      <div class="flex-container">
+        <span class="author flex-container" (click)="redirectToAuthor(question.author)">
+          {{ question.author == undefined ? "" : question.author.userName }}
+          <div *ngIf="question.author == undefined ? false : question.author.banned">
+            <span class="error">[Banned]</span>
+          </div>
+        </span>
+        <span class="author score">{{ question.author == undefined ? "" : question.author.score }}</span>
+        <span class="author">asked on {{ question.creationDate | date: 'dd-MM-yyyy' }}</span>
+        <button class="btn-primary" [hidden]="!canEdit()" (click)="editQuestion()">Edit</button>
+        <button class="btn-primary" [hidden]="!isEditing" (click)="updateQuestion()">Update</button>
+        <button class="btn-primary" [hidden]="!canEdit()" (click)="deleteQuestion()">Delete</button>
+      </div>
+
+      <br />
+
+      <h4>{{ question.answers == undefined ? "" : question.answers.length }} Answers</h4>
+      <div *ngIf="question.answers">
+        <app-answers [allowVotes]="true" [answers]="question.answers" (onVote)="ngOnInit()"></app-answers>
+      </div>
+
+    </div>
+
+  </div>
+
+  <hr/>
+
+  <app-create-answer [questionId]="question.id" (onAnswerCreated)="ngOnInit()"></app-create-answer>
+
+</div>

@@ -1,0 +1,3 @@
+<div *ngFor="let answer of answers">
+  <app-answer [allowVotes]="allowVotes" [answer]="answer" (onVote)="onVote.emit()"></app-answer>
+</div>

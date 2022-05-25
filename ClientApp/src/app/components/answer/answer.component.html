@@ -1,0 +1,26 @@
+<div class="post-container hover-container" (click)="redirectToQuestion()">
+  <div class="flex-container">
+    <div [hidden]="allowVotes">
+      <span>Votes: {{ answer.voteCount }}</span>
+    </div>
+    <app-answer-votes [hidden]="!allowVotes" [votes]="answer.votes" [voteCount]="answer.voteCount" [elementId]="answer.id" (onVote)="onVote.emit()"></app-answer-votes>
+    <div class="details">
+      <p [hidden]="isEditing">{{ answer.text }}</p>
+      <textarea #text class="extend" [hidden]="!isEditing"></textarea>
+      <hr />
+      <div class="flex-container">
+        <span class="author flex-container" (click)="redirectToAuthor()">
+          {{ answer.author == undefined ? "" : answer.author.userName }}
+          <div *ngIf="answer.author == undefined ? false : answer.author.banned">
+            <span class="error">[Banned]</span>
+          </div>
+        </span>
+        <span class="author score">{{ answer.author == undefined ? "" : answer.author.score }}</span>
+        <span class="author">answered on {{ answer.creationDate | date: 'dd-MM-yyyy' }}</span>
+        <button class="btn-primary" [hidden]="!allowVotes || !canEdit()" (click)="editAnswer()">Edit</button>
+        <button class="btn-primary" [hidden]="!allowVotes || !isEditing" (click)="updateAnswer()">Update</button>
+        <button class="btn-primary" [hidden]="!allowVotes || !canEdit()" (click)="deleteAnswer()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

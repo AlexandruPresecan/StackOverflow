@@ -1,0 +1,10 @@
+<div class="post-container center-items">
+  <h3>Login</h3>
+  <hr />
+  <h5>Username</h5>
+  <input #userName type="text" />
+  <h5>Password</h5>
+  <input #password type="password" />
+  <button class="btn-primary" (click)="loginUser()">Login</button>
+  <span class="error" [hidden]="error.length <= 0">{{ error }}</span>
+</div>

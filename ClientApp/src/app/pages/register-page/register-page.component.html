@@ -1,0 +1,14 @@
+<div class="post-container center-items">
+  <h3>Register New Account</h3>
+  <hr />
+  <h5>Email</h5>
+  <input #email type="text" />
+  <h5>Username</h5>
+  <input #userName type="text" />
+  <h5>Password</h5>
+  <input #password type="password" />
+  <h5>Confirm Password</h5>
+  <input #confirmPassword type="password" />
+  <button class="btn-primary" (click)="registerUser()">Register</button>
+  <span class="error" [hidden]="error.length <= 0">{{ error }}</span>
+</div>

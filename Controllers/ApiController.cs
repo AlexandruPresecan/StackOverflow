@@ -1,65 +1,61 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StackOverflow.Services;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace StackOverflow.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class ApiController<K, V> : ControllerBase
     {
-        private readonly IService<K, V> _service;
+        protected readonly IService<K, V> _service;
 
         public ApiController(IService<K, V> service)
         {
             _service = service;
         }
-
+        
         public IActionResult ServiceResultToAction(ServiceResult result)
         {
             return result.Success ? Ok(result.Value) : BadRequest(result.Value);
         }
 
-        // GET: api/<ApiController>
         [HttpGet]
-        public IActionResult Get()
+        public virtual IActionResult Get()
         {
             return ServiceResultToAction(_service.Get());
         }
 
-        // GET api/<ApiController>/5
         [HttpGet("{id}")]
-        public IActionResult Get(K id)
+        public virtual IActionResult Get(K id)
         {
             return ServiceResultToAction(_service.Get(id));
         }
 
-        // POST api/<ApiController>
         [HttpPost]
-        public IActionResult Post([FromBody] V value)
+        [Authorize]
+        public virtual IActionResult Post([FromBody] V value)
         {
             if (!ModelState.IsValid)
-                return BadRequest("Invalid Field");
+                return BadRequest(ModelState.Values.Select(m => m.Errors));
 
-            return ServiceResultToAction(_service.Post(value));
+            return ServiceResultToAction(_service.Post(value, HttpContext));
         }
 
-        // PUT api/<ApiController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(K id, [FromBody] V value)
+        [Authorize]
+        public virtual IActionResult Put(K id, [FromBody] V value)
         {
             if (!ModelState.IsValid)
-                return BadRequest("Invalid Field");
+                return BadRequest(ModelState.Values.Select(m => m.Errors));
 
-            return ServiceResultToAction(_service.Put(id, value));
+            return ServiceResultToAction(_service.Put(id, value, HttpContext));
         }
 
-        // DELETE api/<ApiController>/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(K id)
+        [Authorize]
+        public virtual IActionResult Delete(K id)
         {
-            return ServiceResultToAction(_service.Delete(id));
+            return ServiceResultToAction(_service.Delete(id, HttpContext));
         }
     }
 }
